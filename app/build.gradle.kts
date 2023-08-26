@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.maxrave.wallily"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.maxrave.wallily"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -48,6 +48,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.fragment:fragment:1.6.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -91,5 +92,19 @@ dependencies {
     implementation("com.uber.autodispose2:autodispose-android:$autoDispose")
     implementation("com.uber.autodispose2:autodispose-androidx-lifecycle:$autoDispose")
     implementation("com.uber.autodispose2:autodispose-lifecycle:$autoDispose")
+
+    implementation("dev.chrisbanes.insetter:insetter:0.6.1")
+
+    val nav_version = "2.7.0"
+
+    implementation("androidx.navigation:navigation-fragment:$nav_version")
+    implementation("androidx.navigation:navigation-ui:$nav_version")
+
+    val room_version = "2.5.2"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:$room_version")
 
 }

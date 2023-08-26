@@ -1,9 +1,13 @@
-package com.maxrave.wallily.data.model.pixabayResponse;
+package com.maxrave.wallily.data.db.entities;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
-import com.maxrave.wallily.data.db.entities.HitEntity;
 
-public class Hit {
+@Entity
+public class HitEntity {
+    @PrimaryKey(autoGenerate = false)
     @SerializedName("id")
     private float id;
     @SerializedName("pageURL")
@@ -49,7 +53,7 @@ public class Hit {
     @SerializedName("userImageURL")
     private String userImageURL;
 
-    public Hit(float id, String pageURL, String type, String tags, String previewURL, float previewWidth, float previewHeight, String webformatURL, float webformatWidth, float webformatHeight, String largeImageURL, float imageWidth, float imageHeight, float imageSize, float views, float downloads, float collections, float likes, float comments, float user_id, String user, String userImageURL) {
+    public HitEntity(float id, String pageURL, String type, String tags, String previewURL, float previewWidth, float previewHeight, String webformatURL, float webformatWidth, float webformatHeight, String largeImageURL, float imageWidth, float imageHeight, float imageSize, float views, float downloads, float collections, float likes, float comments, float user_id, String user, String userImageURL) {
         this.id = id;
         this.pageURL = pageURL;
         this.type = type;
@@ -251,11 +255,5 @@ public class Hit {
 
     public void setUserImageURL(String userImageURL) {
         this.userImageURL = userImageURL;
-    }
-
-    public HitEntity toHitEntity() {
-        return new HitEntity(
-               id, pageURL, type, tags, previewURL, previewWidth, previewHeight, webformatURL, webformatWidth, webformatHeight, largeImageURL, imageWidth, imageHeight, imageSize, views, downloads, collections, likes, comments, user_id, user, userImageURL
-        );
     }
 }

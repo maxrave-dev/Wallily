@@ -12,9 +12,21 @@ import com.maxrave.wallily.data.model.pixabayResponse.Hit;
 import com.maxrave.wallily.databinding.ItemPictureBinding;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import coil.Coil;
+import coil.ImageLoader;
+
 public class PictureAdapter extends PagingDataAdapter<Hit, PictureAdapter.PictureViewHolder> {
-    public PictureAdapter(@NonNull DiffUtil.ItemCallback<Hit> diffCallback) {
+    private final OnItemClickListener listener;
+    public PictureAdapter(@NonNull DiffUtil.ItemCallback<Hit> diffCallback, OnItemClickListener listener) {
         super(diffCallback);
+        this.listener = listener;
+    }
+    public interface OnItemClickListener {
+        void onItemClick(Hit item);
     }
 
     @NonNull
@@ -29,24 +41,19 @@ public class PictureAdapter extends PagingDataAdapter<Hit, PictureAdapter.Pictur
         Hit hit = getItem(position);
         assert hit != null;
         Picasso.get().load(hit.getLargeImageURL()).into(binding.ivPicture);
-        String url = hit.getPageURL();
-        String keyword = "photos/";
+        Pattern pattern = Pattern.compile("/([^/]+)/$");
+        Matcher matcher = pattern.matcher(Objects.requireNonNull(hit.getPageURL()));
 
-        int index = url.lastIndexOf(keyword);
-        if (index != -1) {
-            String extractedString = url.substring(index + keyword.length());
-            int lastIndex = extractedString.lastIndexOf("-");
-            if (lastIndex != -1) {
-                String result = extractedString.substring(0, lastIndex);
-                binding.tvPictureTitle.setText(result.replace("-", " "));
-                System.out.println("Result: " + result);
-            } else {
-                System.out.println("No hyphen found.");
-            }
-            System.out.println("Extracted: " + extractedString);
-        } else {
-            System.out.println("Keyword not found.");
+        String name = matcher.find() ? matcher.group(1) : "";
+        if (name != null && name.contains("-")) {
+            name = name.replace("-", " ").replaceAll("\\d", "");
+
         }
+        binding.tvPictureTitle.setText(name);
+
+        binding.getRoot().setOnClickListener(v -> {
+            listener.onItemClick(hit);
+        });
     }
 
     class PictureViewHolder extends RecyclerView.ViewHolder {
