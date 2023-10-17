@@ -20,8 +20,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class PicturePagingSource extends RxPagingSource<Integer, Hit> {
     MainRepository mainRepository;
-    public PicturePagingSource(MainRepository mainRepository) {
+    String keyword;
+
+    String searchQuery;
+    public PicturePagingSource(MainRepository mainRepository, String keyword, String searchQuery) {
         this.mainRepository = mainRepository;
+        this.keyword = keyword;
+        this.searchQuery = searchQuery;
     }
 
     @Nullable
@@ -37,7 +42,7 @@ public class PicturePagingSource extends RxPagingSource<Integer, Hit> {
             // If page number is already there then init page variable with it otherwise we are loading fist page
             int page = loadParams.getKey() != null ? loadParams.getKey() : 1;
             // Send request to server with page number
-            return mainRepository.getImageByPage("backgrounds", "vertical", page, 40)
+            return mainRepository.getImageByPage(searchQuery, keyword, "vertical", page, 20)
                     // Subscribe the result
                     .subscribeOn(Schedulers.io())
                     // Map result top List of movies

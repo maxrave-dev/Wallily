@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "408664017500",
+    "project_id": "wallily",
+    "storage_bucket": "wallily.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408664017500:android:ee31a881cae388b9d87499",
+        "android_client_info": {
+          "package_name": "com.maxrave.wallily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408664017500-fb774hh9u43hqgquavobfp39krmbhv6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maxrave.wallily",
+            "certificate_hash": "0d27d2d640a404ee5068b2c1d9a3f1ec4513c792"
+          }
+        },
+        {
+          "client_id": "408664017500-g320431ogbnlqhb9jihbspd0f4fnea3e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAao8sumt6yW6AoE2vMsQq46Ek66KcwWvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408664017500-g320431ogbnlqhb9jihbspd0f4fnea3e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

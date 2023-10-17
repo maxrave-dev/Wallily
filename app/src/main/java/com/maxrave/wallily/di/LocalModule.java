@@ -4,11 +4,13 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.maxrave.wallily.data.datastore.DataStoreManager;
 import com.maxrave.wallily.data.db.PictureDao;
 import com.maxrave.wallily.data.db.PictureDatabase;
 
 import javax.inject.Singleton;
 
+import coil.ImageLoader;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -20,15 +22,14 @@ import dagger.hilt.components.SingletonComponent;
 public class LocalModule {
     @Provides
     @Singleton
-    PictureDatabase provideMusicDatabase(@ApplicationContext Context context) {
+    public static PictureDatabase provideMusicDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, PictureDatabase.class, "Wallily DB")
                 .build();
     }
 
     @Provides
     @Singleton
-    PictureDao provideDatabaseDao(PictureDatabase pictureDatabase) {
+    public static PictureDao provideDatabaseDao(PictureDatabase pictureDatabase) {
         return pictureDatabase.pictureDao();
     }
-
 }

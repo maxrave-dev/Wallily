@@ -4,11 +4,13 @@ import androidx.paging.PagingSource;
 
 import com.maxrave.wallily.data.db.entities.HitEntity;
 import com.maxrave.wallily.data.db.entities.HitRemoteKey;
+import com.maxrave.wallily.data.db.entities.SearchHistory;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 public class LocalDataSource {
@@ -44,4 +46,14 @@ public class LocalDataSource {
         pictureDao.clearAllRemoteKeys();
     }
 
+    public Single<List<SearchHistory>> getSearchHistory() {
+         return pictureDao.getSearchHistory();
+    }
+
+    public Completable insertSearchHistory(SearchHistory searchHistory) {
+        return pictureDao.insertSearchHistory(searchHistory);
+    }
+    public void removeSearchHistory(String query) {
+        pictureDao.removeSearchHistory(query);
+    }
 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id ("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -44,11 +45,19 @@ dependencies {
             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
         }
     }
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.fragment:fragment:1.6.1")
+    implementation("androidx.datastore:datastore-preferences-rxjava3:1.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -62,7 +71,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttp_version")
 
     //Glide
-    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     implementation("io.coil-kt:coil:2.4.0")
 
@@ -71,9 +81,10 @@ dependencies {
     implementation("pub.devrel:easypermissions:3.0.0")
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-rxjava3:1.0.0")
     //Hilt
-    implementation("com.google.dagger:hilt-android:2.47")
-    annotationProcessor("com.google.dagger:hilt-compiler:2.47")
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.48.1")
     //Shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
@@ -82,7 +93,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:$lottieVersion")
 
     //Paging 3
-    val paging_version= "3.2.0"
+    val paging_version= "3.2.1"
     implementation("androidx.paging:paging-runtime:$paging_version")
     // optional - RxJava3 support
     implementation("androidx.paging:paging-rxjava3:$paging_version")
@@ -95,7 +106,7 @@ dependencies {
 
     implementation("dev.chrisbanes.insetter:insetter:0.6.1")
 
-    val nav_version = "2.7.0"
+    val nav_version = "2.7.4"
 
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")

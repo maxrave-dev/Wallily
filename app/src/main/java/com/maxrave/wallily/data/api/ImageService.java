@@ -16,8 +16,8 @@ public class ImageService {
         this.service = service;
     }
 
-    public Single<PixabayResponse> getImages(String query, String orientation, int page, int per_page) {
-        return service.getImages(Config.API_KEY, query, orientation, page, per_page);
+    public Single<PixabayResponse> getImages(String query, String category, String orientation, int page, int per_page) {
+        return service.getImages(Config.API_KEY, query, category, orientation, page, per_page);
     }
 
 }

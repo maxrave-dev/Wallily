@@ -3,14 +3,17 @@ package com.maxrave.wallily.data.db;
 import androidx.paging.PagingSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Upsert;
 
 import com.maxrave.wallily.data.db.entities.HitEntity;
 import com.maxrave.wallily.data.db.entities.HitRemoteKey;
+import com.maxrave.wallily.data.db.entities.SearchHistory;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
@@ -33,4 +36,13 @@ public interface PictureDao {
 
     @Query("DELETE FROM hitremotekey")
     void clearAllRemoteKeys();
+
+    @Query("SELECT * FROM search_history")
+    Single<List<SearchHistory>> getSearchHistory();
+
+    @Query("DELETE FROM search_history WHERE searchHistory = :query")
+    void removeSearchHistory(String query);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertSearchHistory(SearchHistory searchHistory);
 }

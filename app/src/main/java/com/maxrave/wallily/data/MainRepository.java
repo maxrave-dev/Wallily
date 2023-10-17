@@ -6,6 +6,7 @@ import com.maxrave.wallily.data.api.ImageService;
 import com.maxrave.wallily.data.db.LocalDataSource;
 import com.maxrave.wallily.data.db.entities.HitEntity;
 import com.maxrave.wallily.data.db.entities.HitRemoteKey;
+import com.maxrave.wallily.data.db.entities.SearchHistory;
 import com.maxrave.wallily.data.model.pixabayResponse.PixabayResponse;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
 @Singleton
@@ -28,8 +31,8 @@ public class MainRepository {
         this.localDataSource = localDataSource;
     }
 
-    public Single<PixabayResponse> getImageByPage(String query, String orientation, int page, int per_page) {
-        return imageService.getImages(query, orientation, page, per_page);
+    public Single<PixabayResponse> getImageByPage(String query, String category, String orientation, int page, int per_page) {
+        return imageService.getImages(query, category, orientation, page, per_page);
     }
 
     //Database
@@ -55,4 +58,11 @@ public class MainRepository {
         return localDataSource.getRemoteKey(id);
     }
 
+    public Single<List<SearchHistory>> getSearchHistory() {
+        return localDataSource.getSearchHistory();
+    }
+
+    public Completable insertSearchHistory(SearchHistory searchHistory) {
+        return localDataSource.insertSearchHistory(searchHistory);
+    }
 }

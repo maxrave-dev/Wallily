@@ -1,5 +1,6 @@
 package com.maxrave.wallily.ui;
 
+import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.maxrave.wallily.R;
 import com.maxrave.wallily.databinding.BottomSheetMoreBinding;
 import com.maxrave.wallily.databinding.BottomSheetWallpaperChooseBinding;
 import com.maxrave.wallily.databinding.FragmentPreviewBinding;
@@ -34,10 +36,12 @@ import java.util.regex.Pattern;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.chrisbanes.insetter.Insetter;
+import pub.devrel.easypermissions.EasyPermissions;
 
 @AndroidEntryPoint
 public class PreviewFragment extends Fragment {
 
+    private static final int RC_WRITE_EXTERNAL_STORAGE = 140;
     private FragmentPreviewBinding binding;
 
     private SharedViewModel viewModel;
@@ -248,8 +252,15 @@ public class PreviewFragment extends Fragment {
 
         });
         binding.btSave.setOnClickListener(v1 -> {
-            DownloadManager downloadManager = new DownloadManager(requireContext());
-            downloadManager.download(Objects.requireNonNull(viewModel.picture.getValue()).getLargeImageURL());
+            String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            if (EasyPermissions.hasPermissions(requireContext(), perms)) {
+                DownloadManager downloadManager = new DownloadManager(requireContext());
+                downloadManager.download(Objects.requireNonNull(viewModel.picture.getValue()).getLargeImageURL());
+            } else {
+                // Do not have permissions, request them now
+                EasyPermissions.requestPermissions(this, getString(R.string.request_storage_permission),
+                        RC_WRITE_EXTERNAL_STORAGE, perms);
+            }
         });
     }
     public void setEnabledAll(View v, Boolean enabled) {
