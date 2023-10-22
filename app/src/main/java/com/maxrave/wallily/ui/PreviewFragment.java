@@ -1,5 +1,8 @@
 package com.maxrave.wallily.ui;
 
+import static com.maxrave.wallily.data.datastore.DataStoreManager.FALSE;
+import static com.maxrave.wallily.data.datastore.DataStoreManager.TRUE;
+
 import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.Intent;
@@ -13,7 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +26,9 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.maxrave.wallily.R;
+import com.maxrave.wallily.adapter.AddToCollectionAdapter;
+import com.maxrave.wallily.data.model.firebase.Collections;
+import com.maxrave.wallily.databinding.BottomSheetAddToCollectionBinding;
 import com.maxrave.wallily.databinding.BottomSheetMoreBinding;
 import com.maxrave.wallily.databinding.BottomSheetWallpaperChooseBinding;
 import com.maxrave.wallily.databinding.FragmentPreviewBinding;
@@ -30,6 +38,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -135,6 +145,29 @@ public class PreviewFragment extends Fragment {
                 shareIntent.putExtra(Intent.EXTRA_TEXT, Objects.requireNonNull(viewModel.picture.getValue()).getPageURL());
                 Intent chooserIntent = Intent.createChooser(shareIntent, "Share URL");
                 startActivity(chooserIntent);
+            });
+            dialogView.btSave.setOnClickListener(v1 -> {
+                if (viewModel.getLoggedInLiveData().getValue() != null && Objects.equals(viewModel.getLoggedInLiveData().getValue(), FALSE)) {
+                    Toast.makeText(requireContext(), "Please login to get collections", Toast.LENGTH_SHORT).show();
+                }
+                else if ((Objects.equals(viewModel.getLoggedInLiveData().getValue(), TRUE) && viewModel.getListCollectionsLiveData().getValue() == null) || (Objects.equals(viewModel.getLoggedInLiveData().getValue(), TRUE) && viewModel.getListCollectionsLiveData().getValue() != null && viewModel.getListCollectionsLiveData().getValue().size() == 0)) {
+                    Toast.makeText(requireContext(), "Please create one collection first", Toast.LENGTH_SHORT).show();
+                }
+                else if (viewModel.getListCollectionsLiveData().getValue() != null && viewModel.getListCollectionsLiveData().getValue().size() > 0) {
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+                    BottomSheetAddToCollectionBinding sheetView = BottomSheetAddToCollectionBinding.inflate(getLayoutInflater());
+                    ArrayList<Collections> collections = new ArrayList<>(viewModel.getListCollectionsLiveData().getValue());
+                    AddToCollectionAdapter adapter = new AddToCollectionAdapter(collections);
+                    sheetView.rvCollections.setAdapter(adapter);
+                    sheetView.rvCollections.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    adapter.setOnItemClickListener(position -> {
+                        viewModel.addPictureToCollection(viewModel.picture.getValue(), collections.get(position).getId());
+                        bottomSheetDialog.dismiss();
+                    });
+                    bottomSheetDialog.setContentView(sheetView.getRoot());
+                    bottomSheetDialog.setCancelable(true);
+                    bottomSheetDialog.show();
+                }
             });
             dialogView.btSaveToDevice.setOnClickListener(v1 -> {
                 DownloadManager downloadManager = new DownloadManager(requireContext());

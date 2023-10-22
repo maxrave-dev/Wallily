@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.AccountFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/baseline_arrow_back_ios_new_24"
+                app:navigationIconTint="@color/cardview_light_background">
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivAvatar"
+            android:layout_marginTop="15dp"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_180sdp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            android:layout_gravity="center_horizontal">
+
+        </com.google.android.material.imageview.ShapeableImageView>
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:id="@+id/tvDisplayName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/_15ssp"
+            android:text="Minh"
+            android:textColor="@android:color/white">
+
+        </TextView>
+        <TextView
+            android:layout_marginTop="8dp"
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/_13ssp"
+            android:inputType="textEmailAddress"
+            android:text="ndtminh2608@gmail.com">
+
+        </TextView>
+        <Button
+            android:id="@+id/btChangeDisplayName"
+            android:layout_marginTop="25dp"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Change Display Name"
+            style="@style/Widget.Material3.Button.ElevatedButton">
+        </Button>
+        <Button
+            android:id="@+id/btChangeAvatar"
+            android:layout_marginTop="5dp"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Change Avatar"
+            style="@style/Widget.Material3.Button.ElevatedButton">
+        </Button>
+        <Button
+            android:id="@+id/btLogOut"
+            android:layout_marginTop="5dp"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Log Out">
+        </Button>
+        <Button
+            android:id="@+id/btRemoveAccount"
+            android:layout_marginTop="5dp"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Remove Account"
+            style="@style/Widget.Material3.Button.OutlinedButton">
+        </Button>
+    </LinearLayout>
+
+</RelativeLayout>

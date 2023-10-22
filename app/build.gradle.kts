@@ -49,6 +49,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
 
     // Also add the dependency for the Google Play services library and specify its version
     implementation("com.google.android.gms:play-services-auth:20.7.0")
@@ -117,5 +118,11 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
     // optional - RxJava3 support for Room
     implementation("androidx.room:room-rxjava3:$room_version")
+
+    implementation("com.intuit.sdp:sdp-android:1.1.0")
+    implementation("com.intuit.ssp:ssp-android:1.1.0")
+
+    //multiple imageview
+    implementation("com.github.stfalcon-studio:MultiImageView:0.1")
 
 }

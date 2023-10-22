@@ -20,4 +20,7 @@ public class ImageService {
         return service.getImages(Config.API_KEY, query, category, orientation, page, per_page);
     }
 
+    public Single<PixabayResponse> getImageById(String id) {
+        return service.getImageById(Config.API_KEY, id);
+    }
 }

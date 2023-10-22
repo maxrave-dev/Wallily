@@ -4,6 +4,7 @@ import static com.maxrave.wallily.data.datastore.DataStoreManager.TRUE;
 import static autodispose2.AutoDispose.autoDisposable;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ import com.maxrave.wallily.pagination.LoadStateAdapter;
 import com.maxrave.wallily.pagination.PictureComparator;
 import com.maxrave.wallily.viewModel.SharedViewModel;
 
+import java.net.URI;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -100,6 +102,24 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(requireContext(), "Sign in failed", Toast.LENGTH_SHORT).show();
                 }
             });
+
+    ActivityResultLauncher<Intent> mGetImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result ->
+        {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                if (result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri != null) {
+                        ContentResolver contentResolver = requireContext().getContentResolver();
+                        Integer takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        requireActivity().grantUriPermission(requireActivity().getPackageName(), uri, takeFlags);
+                        contentResolver.takePersistableUriPermission(uri, takeFlags);
+                        viewModel.uploadImage(uri);
+                    }
+                }
+
+            }
+        });
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -141,6 +161,8 @@ public class HomeFragment extends Fragment {
             viewModel.getAccount();
             viewModel.getAccountLiveData().observe(getViewLifecycleOwner(), account -> {
                 if (account != null) {
+                    ((TextView) binding.navView.getHeaderView(0).findViewById(R.id.tvAccountName)).setText(account.getDisplay_name());
+                    ((TextView) binding.navView.getHeaderView(0).findViewById(R.id.tvAccountEmail)).setText(account.getEmail());
                     Glide.with(requireContext()).load(account.getAvatar_url()).into(((ImageView) binding.navView.getHeaderView(0).findViewById(R.id.ivAvatar)));
                 }
             });
@@ -208,6 +230,7 @@ public class HomeFragment extends Fragment {
                 binding.navView.getHeaderView(0).findViewById(R.id.info_layout).setVisibility(View.VISIBLE);
                 binding.navView.getHeaderView(0).findViewById(R.id.btLogIn).setVisibility(View.GONE);
                 updateUI(mAuth.getCurrentUser());
+                viewModel.getListCollections();
             } else {
                 binding.navView.getHeaderView(0).findViewById(R.id.info_layout).setVisibility(View.GONE);
                 binding.navView.getHeaderView(0).findViewById(R.id.btLogIn).setVisibility(View.VISIBLE);
@@ -222,12 +245,23 @@ public class HomeFragment extends Fragment {
             mGetContent.launch(mGoogleSignInClient.getSignInIntent());
 
         });
+        binding.navView.getHeaderView(0).findViewById(R.id.btChangeAvatar).setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("image/*");
+            mGetImage.launch(intent);
+            viewModel.getAccountLiveData().observe(getViewLifecycleOwner(), account -> {
+                if (account != null) {
+                    updateUI(mAuth.getCurrentUser());
+                }
+            });
+        });
         binding.navView.setNavigationItemSelectedListener(item -> {
+                    boolean loggedIn = Objects.equals(viewModel.getLoggedInLiveData().getValue(), TRUE);
                     if (item.getItemId() == R.id.logout_item) {
-                        if (Objects.equals(viewModel.getLoggedInLiveData().getValue(), TRUE)) {
+                        if (loggedIn) {
                             viewModel.setLoggedIn(false);
                             mAuth.signOut();
-                            viewModel.removeAccount();
+                            viewModel.logOut();
                             updateUI(null);
                             Toast.makeText(requireContext(), "Log out success", Toast.LENGTH_SHORT).show();
                             return false;
@@ -236,6 +270,27 @@ public class HomeFragment extends Fragment {
                             Toast.makeText(requireContext(), "You are not logged in", Toast.LENGTH_SHORT).show();
                             return false;
                         }
+                    } else if (item.getItemId() == R.id.account_item) {
+                        if (loggedIn) {
+                            Navigation.findNavController(view).navigate(R.id.action_global_accountFragment);
+                        }
+                        else {
+                            Toast.makeText(requireContext(), "You are not logged in", Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (item.getItemId() == R.id.home_item) {
+                        binding.rootLayout.close();
+                    } else if (item.getItemId() == R.id.collections_item) {
+                        if (loggedIn) {
+                            Navigation.findNavController(view).navigate(R.id.action_global_collectionFragment);
+                        }
+                        else {
+                            Toast.makeText(requireContext(), "You are not logged in", Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (item.getItemId() == R.id.settings_item) {
+                        Navigation.findNavController(view).navigate(R.id.action_global_settingsFragment);
+                    } else if (item.getItemId() == R.id.about_item) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/maxrave-dev/Wallily"));
+                        startActivity(browserIntent);
                     }
                     return false;
                 }
@@ -253,6 +308,9 @@ public class HomeFragment extends Fragment {
                 else {
                     binding.searchBar.setVisibility(View.GONE);
                 }
+            }
+            else if (menuItem.getItemId() == R.id.settings) {
+                Navigation.findNavController(view).navigate(R.id.action_global_settingsFragment);
             }
             return true;
         });

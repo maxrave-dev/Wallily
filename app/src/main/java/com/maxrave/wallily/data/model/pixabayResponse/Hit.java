@@ -5,7 +5,7 @@ import com.maxrave.wallily.data.db.entities.HitEntity;
 
 public class Hit {
     @SerializedName("id")
-    private float id;
+    private int id;
     @SerializedName("pageURL")
     private String pageURL;
     @SerializedName("type")
@@ -49,7 +49,7 @@ public class Hit {
     @SerializedName("userImageURL")
     private String userImageURL;
 
-    public Hit(float id, String pageURL, String type, String tags, String previewURL, float previewWidth, float previewHeight, String webformatURL, float webformatWidth, float webformatHeight, String largeImageURL, float imageWidth, float imageHeight, float imageSize, float views, float downloads, float collections, float likes, float comments, float user_id, String user, String userImageURL) {
+    public Hit(int id, String pageURL, String type, String tags, String previewURL, float previewWidth, float previewHeight, String webformatURL, float webformatWidth, float webformatHeight, String largeImageURL, float imageWidth, float imageHeight, float imageSize, float views, float downloads, float collections, float likes, float comments, float user_id, String user, String userImageURL) {
         this.id = id;
         this.pageURL = pageURL;
         this.type = type;
@@ -75,7 +75,7 @@ public class Hit {
     }
     // Getter Methods
 
-    public float getId() {
+    public int getId() {
         return id;
     }
 
@@ -165,7 +165,7 @@ public class Hit {
 
     // Setter Methods
 
-    public void setId(float id) {
+    public void setId(int id) {
         this.id = id;
     }
 

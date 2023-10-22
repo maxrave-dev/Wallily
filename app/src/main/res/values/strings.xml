@@ -6,4 +6,5 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="request_storage_permission">Give Wallily \"Write external stotage\" permission to download image</string>
+    <string name="hits_count">%1$s hit(s)</string>
 </resources>

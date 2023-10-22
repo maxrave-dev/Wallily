@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/home_item"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home"
+        android:checkable="true"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/profile_item"
         android:title="@string/profile_subheader_title">
         <menu>
-            <item
-                android:id="@+id/saved_item"
-                android:icon="@drawable/baseline_bookmark_24"
-                android:title="Saved"
-                android:checkable="true"
-                app:showAsAction="ifRoom"/>
             <item
                 android:id="@+id/collections_item"
                 android:icon="@drawable/baseline_collections_bookmark_24"

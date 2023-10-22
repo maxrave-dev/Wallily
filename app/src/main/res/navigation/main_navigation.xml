@@ -22,4 +22,39 @@
         android:name="com.maxrave.wallily.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.maxrave.wallily.ui.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
+    <action
+        android:id="@+id/action_global_accountFragment"
+        app:destination="@id/accountFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/collectionFragment"
+        android:name="com.maxrave.wallily.ui.CollectionFragment"
+        android:label="fragment_collection"
+        tools:layout="@layout/fragment_collection" />
+    <action
+        android:id="@+id/action_global_collectionFragment"
+        app:destination="@id/collectionFragment" />
+    <fragment
+        android:id="@+id/detailCollectionFragment"
+        android:name="com.maxrave.wallily.ui.DetailCollectionFragment"
+        android:label="fragment_detail_collection"
+        tools:layout="@layout/fragment_detail_collection" />
+    <action
+        android:id="@+id/action_global_detailCollectionFragment"
+        app:destination="@id/detailCollectionFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.maxrave.wallily.ui.SettingsFragment"
+        android:label="SettingsFragment" />
+    <action
+        android:id="@+id/action_global_settingsFragment"
+        app:destination="@id/settingsFragment" />
 </navigation>
