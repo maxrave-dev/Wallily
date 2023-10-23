@@ -137,7 +137,7 @@ public class HomeFragment extends Fragment {
                             if (Objects.requireNonNull(task.getResult().getAdditionalUserInfo()).isNewUser()) {
                                 FirebaseUser userNonNull = FirebaseAuth.getInstance().getCurrentUser();
                                 viewModel.createNewAccount(new Account(
-                                      userNonNull.getEmail() , userNonNull.getUid(), userNonNull.getDisplayName(), userNonNull.getDisplayName()
+                                      userNonNull.getEmail() , userNonNull.getUid(), userNonNull.getDisplayName(), userNonNull.getPhotoUrl().toString()
                                 ));
                             }
                             viewModel.setLoggedIn(true);
@@ -163,7 +163,13 @@ public class HomeFragment extends Fragment {
                 if (account != null) {
                     ((TextView) binding.navView.getHeaderView(0).findViewById(R.id.tvAccountName)).setText(account.getDisplay_name());
                     ((TextView) binding.navView.getHeaderView(0).findViewById(R.id.tvAccountEmail)).setText(account.getEmail());
-                    Glide.with(requireContext()).load(account.getAvatar_url()).into(((ImageView) binding.navView.getHeaderView(0).findViewById(R.id.ivAvatar)));
+                    Log.w("Update UI", "updateUI: " + account.getAvatar_url());
+                    if (account.getAvatar_url() != null && account.getAvatar_url() != account.getDisplay_name()) {
+                        Glide.with(requireContext()).load(account.getAvatar_url()).into(((ImageView) binding.navView.getHeaderView(0).findViewById(R.id.ivAvatar)));
+                    }
+                    else {
+                        Glide.with(requireContext()).load(user.getPhotoUrl()).into(((ImageView) binding.navView.getHeaderView(0).findViewById(R.id.ivAvatar)));
+                    }
                 }
             });
         } else {

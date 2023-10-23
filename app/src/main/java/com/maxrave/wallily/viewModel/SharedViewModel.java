@@ -269,8 +269,10 @@ public class SharedViewModel extends AndroidViewModel {
                 String id = task.getResult().getDocuments().get(0).getId();
                 firebaseRepository.getDataOfDocument(id).addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
-                        Log.w("SharedViewModel", "getListCollections: " + task1.getResult().get("collections").toString());
-                        listCollections.postValue(getCollectionsListFromHashMap((ArrayList<Object>) task1.getResult().get("collections")));
+                        if (task1.getResult().get("collections") != null) {
+                            Log.w("SharedViewModel", "getListCollections: " + task1.getResult().get("collections").toString());
+                            listCollections.postValue(getCollectionsListFromHashMap((ArrayList<Object>) task1.getResult().get("collections")));
+                        }
                     }
                     else {
                         if (task1.getException() != null) {
