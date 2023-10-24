@@ -127,5 +127,6 @@ dependencies {
 
     //multiple imageview
     implementation("com.github.stfalcon-studio:MultiImageView:0.1")
+    implementation("cat.ereza:customactivityoncrash:2.4.0")
 
 }
