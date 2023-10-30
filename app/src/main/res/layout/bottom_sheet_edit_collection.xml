@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="#242424"
+    style="@style/Widget.Material3.CardView.Filled"
+    app:cardCornerRadius="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="60sp"
+            android:layout_height="4sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5sp"
+            app:cardBackgroundColor="#474545"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_marginBottom="5sp">
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/btEditName"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:text="Edit name"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="8dp"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </Button>
+        <Button
+            android:id="@+id/btRemove"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:text="Remove this collection"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="8dp"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </Button>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

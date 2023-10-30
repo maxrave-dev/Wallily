@@ -29,11 +29,19 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
+    public interface OnLongClickListener {
+        void onLongClick(int position);
+    }
 
     private OnItemClickListener listener;
 
+    private OnLongClickListener longClickListener;
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+    public void setOnLongClickListener(OnLongClickListener longClickListener) {
+        this.longClickListener = longClickListener;
     }
 
     public CollectionAdapter(Context context, ArrayList<Collections> list) {
@@ -48,10 +56,12 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         ItemCollectionBinding binding;
 
         OnItemClickListener listener;
-        public ViewHolder(ItemCollectionBinding binding, OnItemClickListener listener) {
+        OnLongClickListener longClickListener;
+        public ViewHolder(ItemCollectionBinding binding, OnItemClickListener listener, OnLongClickListener longClickListener) {
             super(binding.getRoot());
             this.binding = binding;
             this.listener = listener;
+            this.longClickListener = longClickListener;
             binding.getRoot().setOnClickListener(v -> {
                 if (listener != null) {
                     int position = getBindingAdapterPosition();
@@ -59,6 +69,15 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                         listener.onItemClick(position);
                     }
                 }
+            });
+            binding.getRoot().setOnLongClickListener(v -> {
+                if (longClickListener != null) {
+                    int position = getBindingAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        longClickListener.onLongClick(position);
+                    }
+                }
+                return true;
             });
         }
 
@@ -87,7 +106,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     @NonNull
     @Override
     public CollectionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(ItemCollectionBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false), listener);
+        return new ViewHolder(ItemCollectionBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false), listener, longClickListener);
     }
 
     @Override

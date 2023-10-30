@@ -114,6 +114,7 @@ public class DetailCollectionFragment extends Fragment {
                 hits.clear();
                 hits.addAll(hit);
                 adapter.updateList(hits);
+                viewModel.updateImageUrlCollection(collectionId, hits);
             }
         });
     }

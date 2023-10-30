@@ -426,4 +426,103 @@ public class SharedViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void editCollectionName(String collectionId, String newName) {
+        firebaseRepository.findDocument().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String document = task.getResult().getDocuments().get(0).getId();
+                ArrayList<Collections> collections = getListCollectionsLiveData().getValue();
+                Collections collection = getCollectionData(collectionId);
+                if (collections != null) {
+                    collections.remove(collection);
+                    collection.setName(newName);
+                    collections.add(collection);
+
+                    firebaseRepository.updateCollection(collections, document).addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            getListCollections();
+                            Toast.makeText(application, "Updated name", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            if (task1.getException() != null) {
+                                Log.d("SharedViewModel", "Update name: " + task1.getException().getMessage());
+                            }
+                        }
+                    });
+                }
+            }
+            else {
+                if (task.getException() != null) {
+                    Log.d("SharedViewModel", "edit name: " + task.getException().getMessage());
+                }
+            }
+        });
+    }
+
+    public void removeCollection(String collectionId) {
+        firebaseRepository.findDocument().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String document = task.getResult().getDocuments().get(0).getId();
+                ArrayList<Collections> collections = getListCollectionsLiveData().getValue();
+                Collections collection = getCollectionData(collectionId);
+                if (collections != null) {
+                    collections.remove(collection);
+                    firebaseRepository.updateCollection(collections, document).addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            getListCollections();
+                            Toast.makeText(application, "Removed", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            if (task1.getException() != null) {
+                                Log.d("SharedViewModel", "Remove " + task1.getException().getMessage());
+                            }
+                        }
+                    });
+                }
+            }
+            else {
+                if (task.getException() != null) {
+                    Log.d("SharedViewModel", "Remove: " + task.getException().getMessage());
+                }
+            }
+        });
+    }
+
+    public void updateImageUrlCollection(String collectionId, ArrayList<Hit> hits) {
+        firebaseRepository.findDocument().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String document = task.getResult().getDocuments().get(0).getId();
+                ArrayList<Collections> collections = getListCollectionsLiveData().getValue();
+                Collections collection = getCollectionData(collectionId);
+                if (collections != null) {
+                    collections.remove(collection);
+                    List<HitId> hitIds = collection.getListHitsId();
+                    hitIds.forEach(hitId -> {
+                        hits.forEach(hit -> {
+                            if (hitId.getId().equals(String.valueOf(hit.getId()))) {
+                                hitId.setThumbnailUrl(hit.getLargeImageURL());
+                            }
+                        });
+                    });
+                    collection.setListHitsId(hitIds);
+                    collections.add(collection);
+                    firebaseRepository.updateCollection(collections, document).addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            getListCollections();
+                        }
+                        else {
+                            if (task1.getException() != null) {
+                                Log.d("SharedViewModel", "Update " + task1.getException().getMessage());
+                            }
+                        }
+                    });
+                }
+            }
+            else {
+                if (task.getException() != null) {
+                    Log.d("SharedViewModel", "Update: " + task.getException().getMessage());
+                }
+            }
+        });
+    }
 }

@@ -45,15 +45,4 @@ public class LocalDataSource {
     public void clearAllRemoteKeys() {
         pictureDao.clearAllRemoteKeys();
     }
-
-    public Single<List<SearchHistory>> getSearchHistory() {
-         return pictureDao.getSearchHistory();
-    }
-
-    public Completable insertSearchHistory(SearchHistory searchHistory) {
-        return pictureDao.insertSearchHistory(searchHistory);
-    }
-    public void removeSearchHistory(String query) {
-        pictureDao.removeSearchHistory(query);
-    }
 }

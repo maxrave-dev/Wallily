@@ -36,13 +36,4 @@ public interface PictureDao {
 
     @Query("DELETE FROM hitremotekey")
     void clearAllRemoteKeys();
-
-    @Query("SELECT * FROM search_history")
-    Single<List<SearchHistory>> getSearchHistory();
-
-    @Query("DELETE FROM search_history WHERE searchHistory = :query")
-    void removeSearchHistory(String query);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertSearchHistory(SearchHistory searchHistory);
 }

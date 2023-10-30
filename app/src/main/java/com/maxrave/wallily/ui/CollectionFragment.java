@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -21,6 +23,7 @@ import com.maxrave.wallily.R;
 import com.maxrave.wallily.adapter.CollectionAdapter;
 import com.maxrave.wallily.data.model.firebase.Collections;
 import com.maxrave.wallily.databinding.BottomSheetCollectionBinding;
+import com.maxrave.wallily.databinding.BottomSheetEditCollectionBinding;
 import com.maxrave.wallily.databinding.FragmentCollectionBinding;
 import com.maxrave.wallily.viewModel.SharedViewModel;
 
@@ -104,6 +107,61 @@ public class CollectionFragment extends Fragment {
             }
             else {
                 Toast.makeText(requireContext(), "This collection is empty", Toast.LENGTH_SHORT).show();
+            }
+        });
+        adapter.setOnLongClickListener(position -> {
+            if (list.get(position) != null) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+                BottomSheetEditCollectionBinding bottomSheetEditCollectionBinding = BottomSheetEditCollectionBinding.inflate(getLayoutInflater());
+                bottomSheetEditCollectionBinding.btRemove.setOnClickListener(v -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                    builder.setTitle("Remove collection");
+                    builder.setMessage("Are you sure you want to remove this collection?");
+                    builder.setPositiveButton("Yes", (dialog, which) -> {
+                        viewModel.removeCollection(list.get(position).getId());
+                        viewModel.getListCollectionsLiveData().observe(getViewLifecycleOwner(), collections -> {
+                            list.clear();
+                            list.addAll(collections);
+                            Log.w("COLLECTION_FRAGMENT", "onViewCreated: " + list.toString());
+                            adapter.updateList(list);
+                        });
+                        bottomSheetDialog.dismiss();
+                    });
+                    builder.setNegativeButton("No", (dialog, which) -> {
+                        dialog.dismiss();
+                    });
+                    builder.create();
+                    builder.show();
+                });
+                bottomSheetEditCollectionBinding.btEditName.setOnClickListener(v -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                    builder.setTitle("Edit collection name");
+                    EditText editText = new EditText(requireContext());
+                    editText.setText(list.get(position).getName());
+                    builder.setView(editText);
+                    builder.setPositiveButton("Save", (dialog, which) -> {
+                        if (editText.getText().toString().isEmpty()) {
+                            editText.setError("Please enter collection name");
+                        } else {
+                            viewModel.editCollectionName(list.get(position).getId(), editText.getText().toString());
+                            viewModel.getListCollectionsLiveData().observe(getViewLifecycleOwner(), collections -> {
+                                list.clear();
+                                list.addAll(collections);
+                                Log.w("COLLECTION_FRAGMENT", "onViewCreated: " + list.toString());
+                                adapter.updateList(list);
+                            });
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss();
+                    });
+                    builder.create();
+                    builder.show();
+                });
+                bottomSheetDialog.setContentView(bottomSheetEditCollectionBinding.getRoot());
+                bottomSheetDialog.setCancelable(true);
+                bottomSheetDialog.show();
             }
         });
     }

@@ -76,12 +76,4 @@ public class MainRepository {
     public Single<HitRemoteKey> getRemoteKey(Float id) {
         return localDataSource.getRemoteKey(id);
     }
-
-    public Single<List<SearchHistory>> getSearchHistory() {
-        return localDataSource.getSearchHistory();
-    }
-
-    public Completable insertSearchHistory(SearchHistory searchHistory) {
-        return localDataSource.insertSearchHistory(searchHistory);
-    }
 }
